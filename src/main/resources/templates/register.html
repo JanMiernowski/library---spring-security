@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejestracja</title>
+</head>
+<body>
+<form method="post" th:action="@{/register}" th:object="${user}">
+    Nazwa: <input type="text" th:field="*{username}"/></br>
+    Hasło: <input type="password" th:field="*{password}"/></br>
+    Rola: <select th:field="*{role}">
+    <option value="ADMIN">Bibliotekarz</option>
+    <option value="USER">Wypożyczający</option>
+</select></br>
+    <input type="submit" value="Zarejestruj">
+</form>
+</body>
+</html>

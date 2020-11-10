@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodawanie książki</title>
+</head>
+<body>
+    <form method="post" th:action="@{/books/addBook}" th:object="${book}">
+        Tytuł: <input type="text" th:field="*{title}">
+        Autor: <input type="text" th:field="*{author}">
+        Isbn: <input type="text" th:field="*{isbn}">
+        <input type="submit" value="Dodaj">
+    </form>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Książki</title>
+</head>
+<body>
+    <ul th:each="book : ${books}">
+        <li >
+            <span th:text="${book.title}"></span>,
+            <span th:text="${book.author}"></span>,
+            <span th:text="${book.isbn}"></span>
+        </li>
+    </ul>
+    <a th:href="@{/books/addBook}">Dodaj książkę</a>
+</body>
+</html>
