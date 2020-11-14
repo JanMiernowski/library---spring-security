@@ -22,21 +22,21 @@ public class UserService {
         entity.encodePassword(passwordEncoder);
         userRepository.create(entity);
     }
-    void update(UserDto dto){
+    public void update(UserDto dto){
         if(getById(dto.getId()).isEmpty()){
             throw new IllegalStateException("Updated object not exists");
         }
         UserEntity entity = userMapper.toEntity(dto);
         userRepository.update(entity);
     }
-    void delete(Long id){
+    public void delete(Long id){
         userRepository.delete(id);
     }
     Optional<UserDto> getById(Long id){
         return userRepository.getById(id)
                 .map(userMapper::toDto);
     }
-    List<UserDto> getAll(){
+    public List<UserDto> getAll(){
         return userRepository.getAll().stream()
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());

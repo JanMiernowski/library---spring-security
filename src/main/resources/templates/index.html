@@ -5,9 +5,41 @@
     <title>Witaj w bibliotece!</title>
 </head>
 <body>
+<div th:replace="fragments/navigation :: navigation"></div>
+
     <h1>Witaj w bibiotece!</h1>
     <h2>Oto dostępne ksiązki</h2>
-    <a th:href="@{/login}">Zaloguj się</a>
-    <a th:href="@{/register}">Zarejestruj się</a>
+<div th:if="${books.size()==0}">
+    Brak w tej chwili książek do wypożyczenia!
+</div>
+    <table th:if="${books.size()>0}">
+        <tr>
+            <td>Tytuł</td>
+            <td>Autor</td>
+            <td>isbn</td>
+        </tr>
+        <tr th:each="book : ${books}" >
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.isbn}"></td>
+            <td sec:authorize="hasRole('USER')">
+                <button><a th:href="@{/users/} + ${book.id}">Wypożycz</a></button>
+            </td>
+            <td sec:authorize="hasRole('ADMIN')">
+                <button><a th:href="@{/books/removeBook/} + ${book.id}">Usuń</a></button>
+                <button><a th:href="@{/books/editBook/} + ${book.id}">Edytuj</a></button>
+            </td>
+        </tr>
+    </table>
+<div sec:authorize="hasRole('USER')">
+    <button><a th:href="@{/books/userBooks}">Zobacz swoje wypożyczenia</a></button>
+</div>
+
+<td sec:authorize="hasRole('ADMIN')">
+    <button><a th:href="@{/users}">Zobacz użytkowników</a></button>
+</td>
+
+
+<div th:replace="fragments/admin :: addBook"/>
 </body>
 </html>

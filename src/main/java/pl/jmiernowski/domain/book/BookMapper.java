@@ -10,6 +10,7 @@ public class BookMapper {
         return BookDto.toDto(entity);
     }
 
+
     public BookEntity toEntity(BookDto dto){
         if(dto == null) return null;
         return dto.toEntity();

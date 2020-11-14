@@ -7,8 +7,14 @@
 <body>
     <form method="post" th:action="@{/books/addBook}" th:object="${book}">
         Tytuł: <input type="text" th:field="*{title}">
+        <span class="warning" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+        <br/>
         Autor: <input type="text" th:field="*{author}">
+        <span class="warning" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
+        <br/>
         Isbn: <input type="text" th:field="*{isbn}">
+        <span class="warning" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></span>
+        <br/>
         <input type="submit" value="Dodaj">
     </form>
 </body>

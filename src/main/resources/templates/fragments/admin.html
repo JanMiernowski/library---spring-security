@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+<div th:fragment="addBook">
+    <div sec:authorize="hasRole('ADMIN')">
+        <button><a th:href="@{/books/addBook}">Dodaj książkę</a></button>
+    </div>
+</div>
+
+<div th:fragment="removeBook">
+    <span sec:authorize="hasRole('ADMIN')">
+        <button><a th:href="@{/books/removeBook}">Usuń</a></button>
+    </span>
+</div>
+
+</body>
+</html>

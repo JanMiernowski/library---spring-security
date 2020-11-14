@@ -16,21 +16,21 @@ public class BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
-    public void create(BookDto dto){
+    public BookEntity create(BookDto dto){
         BookEntity entity = bookMapper.toEntity(dto);
-        bookRepository.create(entity);
+        return bookRepository.create(entity);
     }
-    public void update(BookDto dto){
+    public BookEntity update(BookDto dto){
         if(getById(dto.getId()).isEmpty()){
             throw new IllegalStateException("Updated object not exists");
         }
         BookEntity entity = bookMapper.toEntity(dto);
-        bookRepository.update(entity);
+        return bookRepository.update(entity);
     }
     public void delete(Long id){
         bookRepository.delete(id);
     }
-    Optional<BookDto> getById(Long id){
+   public Optional<BookDto> getById(Long id){
         return bookRepository.getById(id)
                 .map(bookMapper::toDto);
     }

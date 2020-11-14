@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteka</title>
+</head>
+<body>
+<div th:fragment="navigation">
+
+    <div sec:authorize="isAuthenticated()">
+        <p>Jesteś zalogowany jako <span sec:authentication="name"/></p>
+        <form method="post" th:action="@{/logout}">
+            <input type="submit" value="Wyloguj"/>
+        </form>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <a th:href="@{/login}">Zaloguj się</a>
+        <a th:href="@{/register}">Zarejestruj konto</a>
+    </div>
+</div>
+
+
+<div th:fragment="footer">
+    <p>Copyright by SDA 2020</p>
+</div>
+</body>
+</html>

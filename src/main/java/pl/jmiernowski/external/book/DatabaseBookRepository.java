@@ -15,13 +15,13 @@ public class DatabaseBookRepository implements BookRepository {
     private final JpaBookRepository jpaBookRepository;
 
     @Override
-    public void create(BookEntity entity) {
-        jpaBookRepository.save(entity);
+    public BookEntity create(BookEntity entity) {
+        return jpaBookRepository.save(entity);
     }
 
     @Override
-    public void update(BookEntity entity) {
-        jpaBookRepository.save(entity);
+    public BookEntity update(BookEntity entity) {
+        return jpaBookRepository.save(entity);
     }
 
     @Override
