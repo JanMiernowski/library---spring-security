@@ -30,7 +30,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String role;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<BookEntity> borrowedBooks;
     @Transient
     private UUID uuid = UUID.randomUUID();

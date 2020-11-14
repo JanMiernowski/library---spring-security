@@ -31,24 +31,14 @@ public class BookDto {
     @UniqueIsbn
     private String isbn;
 
-    private UserDto user;
-
 
     public BookEntity toEntity(){
-        if(user==null){
-            return BookEntity.builder()
-                    .id(this.getId())
-                    .author(this.author)
-                    .title(this.getTitle())
-                    .isbn(this.getIsbn())
-                    .build();
-        }
+
         return BookEntity.builder()
                 .id(this.getId())
                 .author(this.author)
                 .title(this.getTitle())
                 .isbn(this.getIsbn())
-                .user(this.getUser().toEntity())
                 .build();
     }
 
@@ -57,20 +47,11 @@ public class BookDto {
         if(entity==null){
             return null;
         }
-        if(entity.getUser()==null){
-            return BookDto.builder()
-                    .id(entity.getId())
-                    .author(entity.getAuthor())
-                    .title(entity.getTitle())
-                    .isbn(entity.getIsbn())
-                    .build();
-        }
         return BookDto.builder()
                 .id(entity.getId())
                 .author(entity.getAuthor())
                 .title(entity.getTitle())
                 .isbn(entity.getIsbn())
-                .user(UserDto.toDto(entity.getUser()))
                 .build();
     }
 

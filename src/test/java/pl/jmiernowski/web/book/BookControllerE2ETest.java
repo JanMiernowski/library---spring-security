@@ -37,8 +37,7 @@ class BookControllerE2ETest {
     @Test
     void shouldAddBookToDb(){
         //given
-        UserEntity userEntity = new UserEntity("username","password", "ADMIN");
-        BookEntity book = new BookEntity(1L,"title","author","isbn",userEntity);
+        BookEntity book = new BookEntity(1L,"title","author","isbn");
 
         BookEntity newBook = jpaBookRepository.save(book);
         HttpEntity<BookEntity> entity = new HttpEntity<>(newBook);
@@ -46,7 +45,7 @@ class BookControllerE2ETest {
         ResponseEntity<Void> rsp = restTemplate.exchange(String.format("http://localhost:%d/books/addBook", port),
                 HttpMethod.POST, entity, Void.class);
         //then
-        Assertions.assertEquals(201, rsp.getStatusCodeValue());
+        Assertions.assertEquals(200, rsp.getStatusCodeValue());
         List<BookEntity> all = jpaBookRepository.findAll();
         assertEquals(all.size(),1);
     }

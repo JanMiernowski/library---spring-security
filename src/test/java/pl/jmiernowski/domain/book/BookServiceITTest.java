@@ -38,7 +38,7 @@ class BookServiceITTest {
     void shouldSaveBookInDatabase() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         //when
         bookService.create(dto);
         //then
@@ -55,9 +55,9 @@ class BookServiceITTest {
     void shouldUptadeBookInDatabase() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         BookEntity createdEntity = bookService.create(dto);
-        BookDto dto1 = new BookDto(createdEntity.getId(), "title1", "author1", "isbn1", userDto);
+        BookDto dto1 = new BookDto(createdEntity.getId(), "title1", "author1", "isbn1");
         //when
         bookService.update(dto1);
         //then
@@ -74,9 +74,9 @@ class BookServiceITTest {
     void shouldThrowsExceptionWhenDtoIDIsntInDb() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
-        BookDto dto1 = new BookDto(2L, "title1", "author1", "isbn1", userDto);
+        BookDto dto1 = new BookDto(2L, "title1", "author1", "isbn1");
         //when
         //then
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> bookService.update(dto1));
@@ -87,9 +87,9 @@ class BookServiceITTest {
     void shouldDeleteBookInDatabase() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
-        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1", userDto);
+        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
         BookEntity createdEntity = bookService.create(dto1);
         //when
         bookService.delete(createdEntity.getId());
@@ -102,9 +102,9 @@ class BookServiceITTest {
     void shouldFindBookByIdWhenIdIsInDatabase() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
-        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1", userDto);
+        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
         BookEntity createdEntity = bookService.create(dto1);
         //when
         BookDto entity = bookService.getById(createdEntity.getId()).orElse(null);
@@ -119,9 +119,9 @@ class BookServiceITTest {
     void shouldFindReturnOptionalEmptyWhenIdIsNotInDb() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
-        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1", userDto);
+        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
         bookService.create(dto1);
         //when
         BookDto entity = bookService.getById(5L).orElse(null);
@@ -133,9 +133,9 @@ class BookServiceITTest {
     void shouldFindBookByTitleWhenTitleIsInDatabase() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
-        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1", userDto);
+        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
         bookService.create(dto1);
         //when
         BookDto entity = bookService.findByTitle("title1").orElse(null);
@@ -149,9 +149,9 @@ class BookServiceITTest {
     void shouldFindReturnOptionalEmptyWhenTitleIsNotInDb() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
-        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1", userDto);
+        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
         bookService.create(dto1);
         //when
         BookDto entity = bookService.findByTitle("title2").orElse(null);
@@ -164,9 +164,9 @@ class BookServiceITTest {
     void shouldFindBookByAuthorWhenAuthorIsInDatabase() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
-        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1", userDto);
+        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
         bookService.create(dto1);
         //when
         BookDto entity = bookService.findByAuthor("author1").orElse(null);
@@ -181,9 +181,9 @@ class BookServiceITTest {
     void shouldFindReturnOptionalEmptyWhenAuthorIsNotInDb() {
         //given
         UserDto userDto = mock(UserDto.class);
-        BookDto dto = new BookDto(null, "title", "author", "isbn", userDto);
+        BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
-        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1", userDto);
+        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
         bookService.create(dto1);
         //when
         BookDto entity = bookService.findByAuthor("author2").orElse(null);

@@ -27,9 +27,6 @@ public class BookEntity {
     @Column(nullable = false, unique = true)
     private String isbn;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private UserEntity user;
-
     @Transient
     private final UUID uuid = UUID.randomUUID();
 }

@@ -30,7 +30,7 @@ class DatabaseBookRepositoryTest {
     @Test
     void shouldPersistUserInRepository(){
         //given
-        BookEntity entity = new BookEntity(1L,"title","author","isbn",new UserEntity());
+        BookEntity entity = new BookEntity(1L,"title","author","isbn");
         //when
         repository.create(entity);
         //then
@@ -44,7 +44,7 @@ class DatabaseBookRepositoryTest {
     @Test
     void shouldUpdateUserInRepository(){
         //given
-        BookEntity entity = new BookEntity(1L,"title","author","isbn",new UserEntity());
+        BookEntity entity = new BookEntity(1L,"title","author","isbn");
         //when
         repository.update(entity);
         //then

@@ -14,7 +14,7 @@ class BookMapperTest {
     @Test
     void shouldMapEntityToDto(){
         //given
-        BookEntity entity = new BookEntity(1L,"title","author","isbn", new UserEntity());
+        BookEntity entity = new BookEntity(1L,"title","author","isbn");
         //when
         BookDto dto = mapper.toDto(entity);
         //then
@@ -22,7 +22,6 @@ class BookMapperTest {
         assertEquals(dto.getAuthor(), entity.getAuthor());
         assertEquals(dto.getTitle(), entity.getTitle());
         assertEquals(dto.getIsbn(), entity.getIsbn());
-        assertEquals(dto.getUser().getUsername(), UserDto.toDto(entity.getUser()).getUsername());
     }
 
     @Test
@@ -38,7 +37,7 @@ class BookMapperTest {
     @Test
     void shouldMapDtoToEntity(){
         //given
-        BookDto dto = new BookDto(1L,"title","author","isbn",new UserDto());
+        BookDto dto = new BookDto(1L,"title","author","isbn");
         //when
         BookEntity entity = mapper.toEntity(dto);
         //then
@@ -46,7 +45,7 @@ class BookMapperTest {
         assertEquals(entity.getAuthor(), dto.getAuthor());
         assertEquals(entity.getTitle(), dto.getTitle());
         assertEquals(entity.getIsbn(), dto.getIsbn());
-        assertEquals(entity.getUser(),  dto.getUser().toEntity());
+
     }
 
     @Test

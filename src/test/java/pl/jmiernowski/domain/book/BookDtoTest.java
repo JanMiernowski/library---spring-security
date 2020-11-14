@@ -13,7 +13,7 @@ class BookDtoTest {
     @Test
     void shouldChangeBookDtoToBookEntity(){
         //given
-        BookDto dto = new BookDto(1L,"title","author","isbn",new UserDto());
+        BookDto dto = new BookDto(1L,"title","author","isbn");
         //when
         BookEntity entity = dto.toEntity();
         //then
@@ -21,13 +21,13 @@ class BookDtoTest {
         assertEquals(entity.getAuthor(), dto.getAuthor());
         assertEquals(entity.getTitle(), dto.getTitle());
         assertEquals(entity.getIsbn(), dto.getIsbn());
-        assertEquals(entity.getUser(),  dto.getUser().toEntity());
+
     }
 
     @Test
     void shouldChangeBookDtoToBookEntityWhenUserIsNull(){
         //given
-        BookDto dto = new BookDto(1L,"title","author","isbn",null);
+        BookDto dto = new BookDto(1L,"title","author","isbn");
         //when
         BookEntity entity = dto.toEntity();
         //then
@@ -35,13 +35,13 @@ class BookDtoTest {
         assertEquals(entity.getAuthor(), dto.getAuthor());
         assertEquals(entity.getTitle(), dto.getTitle());
         assertEquals(entity.getIsbn(), dto.getIsbn());
-        assertNull(entity.getUser());
+
     }
 
     @Test
     void shouldChangeEntityToDto(){
         //given
-        BookEntity entity = new BookEntity(1L,"title","author","isbn", new UserEntity());
+        BookEntity entity = new BookEntity(1L,"title","author","isbn");
         //when
         BookDto dto = BookDto.toDto(entity);
         //then
@@ -49,13 +49,12 @@ class BookDtoTest {
         assertEquals(dto.getAuthor(), entity.getAuthor());
         assertEquals(dto.getTitle(), entity.getTitle());
         assertEquals(dto.getIsbn(), entity.getIsbn());
-        assertEquals(dto.getUser().getUsername(), UserDto.toDto(entity.getUser()).getUsername());
     }
 
     @Test
     void shouldChangeEntityToDtoWhenUserIsNull(){
         //given
-        BookEntity entity = new BookEntity(1L,"title","author","isbn", null);
+        BookEntity entity = new BookEntity(1L,"title","author","isbn");
         //when
         BookDto dto = BookDto.toDto(entity);
         //then
@@ -63,7 +62,7 @@ class BookDtoTest {
         assertEquals(dto.getAuthor(), entity.getAuthor());
         assertEquals(dto.getTitle(), entity.getTitle());
         assertEquals(dto.getIsbn(), entity.getIsbn());
-        assertNull(dto.getUser());
+
     }
 
 }
