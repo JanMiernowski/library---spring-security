@@ -43,17 +43,29 @@ public class UserController {
         return mav;
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     String addBookToUser(@PathVariable Long id){
         BookDto book = bookService.getById(id).orElse(new BookDto());
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         UserDto dto = userService.findByUsername(name).orElse(new UserDto());
+
         dto.getBorrowedBooks().add(book);
-        userService.update(dto); //tu jest blad!!!!
-        bookService.delete(id);
+        userService.update(dto);
+
         return "redirect:/";
+    }
+
+    @GetMapping("/giveBack/{id}")
+    String giveBackBook(@PathVariable int id){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        UserDto dto = userService.findByUsername(name).orElse(new UserDto());
+        dto.getBorrowedBooks().remove(id);
+        userService.update(dto);
+        return "redirect:/books/userBooks";
     }
 
 }

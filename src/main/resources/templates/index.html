@@ -23,7 +23,7 @@
             <td th:text="${book.author}"></td>
             <td th:text="${book.isbn}"></td>
             <td sec:authorize="hasRole('USER')">
-                <button><a th:href="@{/users/} + ${book.id}">Wypożycz</a></button>
+                <button><a th:href="@{/users/} + ${book.getId()}">Wypożycz</a></button>
             </td>
             <td sec:authorize="hasRole('ADMIN')">
                 <button><a th:href="@{/books/removeBook/} + ${book.id}">Usuń</a></button>

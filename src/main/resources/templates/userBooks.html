@@ -5,11 +5,12 @@
     <title>Wypożyczone książki</title>
 </head>
 <body>
-<ul th:each="book : ${books}">
-    <li th:text="${book.author}"></li>
-    <li th:text="${book.title}"></li>
-    <li th:text="${book.isbn}"></li>
-</ul>
+<div th:each="book, i : ${books}">
+    <span th:text="${book.author}"></span>,
+    <span th:text="${book.title}"></span>,
+    <span th:text="${book.isbn}"></span>
+    <button><a th:href="@{/users/giveBack/} + ${i.index}">Oddaj</a></button>
+</div>
 
 <a th:href="@{/}">Powrót</a>
 
