@@ -9,15 +9,18 @@
         Brak użytkowników
     </div>
     <div th:unless="${usersList.size() == 0}">
-        <table>
+        <table border="1px">
+            <tr>
+                <td>Użytkownik</td>
+                <td colspan="3"> Wypożyczona książka</td>
+            </tr>
             <tr th:each="user : ${usersList}">
                 <td th:text="${user.username}"></td>
-                <td>
-                    <ul th:each="book : ${user.getBorrowedBooks()}">
-                        <li th:text="${book.title}"></li>
-                        <li th:text="${book.author}"></li>
-                    </ul>
+                <td th:if="${user.getBorrowedBooks().size() > 0}" >
+                    <ol  th:each="book : ${user.getBorrowedBooks()}" th:text="${book.title} + ', ' + ${book.author} + ', ' +${book.isbn}">
+                    </ol>
                 </td>
+                <td th:unless="${user.getBorrowedBooks().size() > 0}">Brak książek</td>
             </tr>
         </table>
     </div>

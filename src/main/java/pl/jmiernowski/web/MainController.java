@@ -30,31 +30,29 @@ public class MainController {
             init = false;
         }
         ModelAndView mav = new ModelAndView();
+        List<BookDto> allAvailableBooks = new ArrayList<>();
         List<BookDto> allBooks = bookService.getAll();
-        List<UserDto> allUsers = userService.getAll();
 
-        for (int i = 0; i < allBooks.size(); i++) {
-            for (int j = 0; j < allUsers.size(); j++) {
-                if (!allUsers.get(j).getBorrowedBooks().isEmpty()) {
-                    for (int k = 0; k < allUsers.get(j).getBorrowedBooks().size(); k++) {
-                        if (allBooks.get(i).getId().equals(allUsers.get(j).getBorrowedBooks().get(k).getId())) {
-                            allBooks.remove(i);
-                        }
-                    }
-                }
+        for (BookDto dtoBook:allBooks
+             ) {
+            if(!dtoBook.getIsBorrow()){
+                allAvailableBooks.add(dtoBook);
             }
         }
-        mav.addObject("books", allBooks);
+
+
+
+        mav.addObject("books", allAvailableBooks);
         mav.setViewName("index.html");
 
         return mav;
     }
 
     private void setInit() {
-        BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
-        BookDto dto2 = new BookDto(null, "title2", "author2", "isbn2");
-        BookDto dto3 = new BookDto(null, "title3", "author3", "isbn3");
-        BookDto dto4 = new BookDto(null, "title4", "author4", "isbn4");
+        BookDto dto1 = new BookDto( "title1", "author1", "isbn1");
+        BookDto dto2 = new BookDto( "title2", "author2", "isbn2");
+        BookDto dto3 = new BookDto( "title3", "author3", "isbn3");
+        BookDto dto4 = new BookDto( "title4", "author4", "isbn4");
         bookService.create(dto1);
         bookService.create(dto2);
         bookService.create(dto3);

@@ -11,8 +11,8 @@ import java.util.UUID;
 @Entity
 @Table()
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @EqualsAndHashCode(of = {"uuid"})
 public class BookEntity {
@@ -26,7 +26,22 @@ public class BookEntity {
     private String author;
     @Column(nullable = false, unique = true)
     private String isbn;
+    @Column(nullable = false)
+    private Boolean isBorrow = false;
 
     @Transient
     private final UUID uuid = UUID.randomUUID();
+
+    public BookEntity(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+
+    public BookEntity(Long id, String title, String author, String isbn) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
 }

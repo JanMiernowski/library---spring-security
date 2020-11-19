@@ -30,6 +30,8 @@ public class BookDto {
     @NotNull
     @UniqueIsbn
     private String isbn;
+    @NotNull
+    private Boolean isBorrow = false;
 
 
     public BookEntity toEntity(){
@@ -39,6 +41,7 @@ public class BookDto {
                 .author(this.author)
                 .title(this.getTitle())
                 .isbn(this.getIsbn())
+                .isBorrow(this.getIsBorrow())
                 .build();
     }
 
@@ -52,7 +55,20 @@ public class BookDto {
                 .author(entity.getAuthor())
                 .title(entity.getTitle())
                 .isbn(entity.getIsbn())
+                .isBorrow(entity.getIsBorrow())
                 .build();
     }
 
+    public BookDto(@NotBlank @NotNull String title, @NotBlank @NotNull String author, @NotBlank @NotNull String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+
+    public BookDto(Long id, @NotBlank @NotNull String title, @NotBlank @NotNull String author, @NotBlank @NotNull String isbn) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
 }

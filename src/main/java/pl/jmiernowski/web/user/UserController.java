@@ -52,7 +52,9 @@ public class UserController {
         UserDto dto = userService.findByUsername(name).orElse(new UserDto());
 
         dto.getBorrowedBooks().add(book);
+        book.setIsBorrow(true);
         userService.update(dto);
+        bookService.update(book);
 
         return "redirect:/";
     }
@@ -63,7 +65,9 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         UserDto dto = userService.findByUsername(name).orElse(new UserDto());
-        dto.getBorrowedBooks().remove(id);
+        BookDto removedBook = dto.getBorrowedBooks().remove(id);
+        removedBook.setIsBorrow(false);
+        bookService.update(removedBook);
         userService.update(dto);
         return "redirect:/books/userBooks";
     }

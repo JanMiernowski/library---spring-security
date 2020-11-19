@@ -1,6 +1,9 @@
 package pl.jmiernowski.domain.user;
 
 import lombok.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.jmiernowski.domain.book.BookDto;
 import pl.jmiernowski.external.book.BookEntity;
 import pl.jmiernowski.external.user.UserEntity;
@@ -27,6 +30,23 @@ public class UserDto {
 
     private List<BookDto> borrowedBooks = new ArrayList<>();
 
+    public UserDto(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public UserDto(Long id, String username, String password, String role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     public static UserDto toDto(UserEntity userEntity) {
         return UserDto.builder()
@@ -65,6 +85,4 @@ public class UserDto {
                         .collect(Collectors.toList());
 
     }
-
-
 }

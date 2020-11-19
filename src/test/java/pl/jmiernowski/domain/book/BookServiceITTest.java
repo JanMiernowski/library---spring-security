@@ -48,6 +48,7 @@ class BookServiceITTest {
         assertEquals(entity.getAuthor(), "author");
         assertEquals(entity.getTitle(), "title");
         assertEquals(entity.getIsbn(), "isbn");
+        assertFalse(entity.getIsBorrow());
 
     }
 
@@ -67,6 +68,7 @@ class BookServiceITTest {
         assertEquals(entity.getAuthor(), "author1");
         assertEquals(entity.getTitle(), "title1");
         assertEquals(entity.getIsbn(), "isbn1");
+        assertFalse(entity.getIsBorrow());
 
     }
 
@@ -112,6 +114,7 @@ class BookServiceITTest {
         assertEquals(entity.getAuthor(), "author1");
         assertEquals(entity.getTitle(), "title1");
         assertEquals(entity.getIsbn(), "isbn1");
+        assertFalse(entity.getIsBorrow());
 
     }
 
@@ -143,6 +146,7 @@ class BookServiceITTest {
         assertEquals(entity.getAuthor(), "author1");
         assertEquals(entity.getTitle(), "title1");
         assertEquals(entity.getIsbn(), "isbn1");
+        assertFalse(entity.getIsBorrow());
 
     }
     @Test
@@ -174,6 +178,7 @@ class BookServiceITTest {
         assertEquals(entity.getAuthor(), "author1");
         assertEquals(entity.getTitle(), "title1");
         assertEquals(entity.getIsbn(), "isbn1");
+        assertFalse(entity.getIsBorrow());
 
     }
 
