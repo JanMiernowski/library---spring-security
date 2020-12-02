@@ -7,9 +7,9 @@ import pl.jmiernowski.domain.email.Email;
 import pl.jmiernowski.domain.email.EmailRepository;
 import pl.jmiernowski.external.user.UserEntity;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -21,14 +21,23 @@ public class UserService {
     private final EmailRepository emailRepository;
 
     public void create(UserDto dto){
+
         UserEntity entity = userMapper.toEntity(dto);
         entity.encodePassword(passwordEncoder);
         userRepository.create(entity);
+        sendWelcomeEmail(dto);
+    }
+
+    private void sendWelcomeEmail(UserDto dto) {
+        Set<String> attachments = new HashSet<>();
+        attachments.add("attachement/CV.pdf");
         emailRepository.sendEmail(
                 new Email(dto.getUsername(),
-                        "Witamy w bibliotece!",
-                        "Witaj w naszej bibliotece by Jasmistrz"));
+                        "Witamy w bibliotece 'Żółć'!",
+                        "Witaj w naszej bibliotece 'Żółć' by Jasmistrz",
+                        attachments));
     }
+
     public void update(UserDto dto){
         if(getById(dto.getId()).isEmpty()){
             throw new IllegalStateException("Updated object not exists");

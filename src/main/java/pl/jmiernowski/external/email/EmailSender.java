@@ -3,6 +3,7 @@ package pl.jmiernowski.external.email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 import pl.jmiernowski.config.SmtpProperties;
 import pl.jmiernowski.domain.email.Email;
 import pl.jmiernowski.domain.email.EmailRepository;
@@ -10,7 +11,10 @@ import pl.jmiernowski.domain.email.EmailRepository;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.IOException;
 import java.util.Properties;
 
 @Component
@@ -25,12 +29,32 @@ public class EmailSender implements EmailRepository {
         try {
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getSendTo(),false));
             msg.setSubject(email.getTitle());
-            msg.setContent(email.getContent(), "text/html; charset=UTF-8");
-
             msg.setFrom(new InternetAddress(smtpProperties.getFrom(),false));
+            //msg.setContent(email.getContent(), "text/html; charset=UTF-8");
+
+            //teraz bedziemy tworzyc calosc maila z podzielonych czesci
+            MimeBodyPart content = new MimeBodyPart();//dodajemy tresc
+            content.setContent(email.getContent(),"text/html; charset=UTF-8");
+
+            //dzielimy naszego maila na wiele czesci
+            Multipart multipart = new MimeMultipart();// nasza calosc maila
+            multipart.addBodyPart(content);
+
+            if(email.getAttachment() != null && !email.getAttachment().isEmpty()){
+                MimeBodyPart attachment = new MimeBodyPart();
+                for (String path : email.getAttachment()) {
+                    //dodawanie kolejnych zalacznikow
+                    attachment.attachFile(
+                            ResourceUtils.getFile("classpath:" + path));
+                    //tak mozemy zrobic zeby byla sciezka do pliku wzgledna
+                }
+                multipart.addBodyPart(attachment);// dodajemy zalaczniki
+            }
+
+            msg.setContent(multipart);
 
             Transport.send(msg);
-        } catch (MessagingException e) {
+        } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }
     }
