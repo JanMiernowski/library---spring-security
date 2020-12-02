@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table()
+@Table(name = "users")
 @EqualsAndHashCode(of = {"uuid"})
 public class UserEntity {
 

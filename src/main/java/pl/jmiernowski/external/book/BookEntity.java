@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
-@Table()
+@Table(name = "books")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
