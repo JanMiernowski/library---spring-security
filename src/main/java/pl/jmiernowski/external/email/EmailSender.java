@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
+import org.thymeleaf.context.Context;
 import pl.jmiernowski.config.SmtpProperties;
 import pl.jmiernowski.domain.email.Email;
 import pl.jmiernowski.domain.email.EmailRepository;
@@ -15,6 +16,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Component
@@ -60,6 +63,8 @@ public class EmailSender implements EmailRepository {
     }
 
 
+
+
     //przygotowujemy obiekt, ktory zawiera wszytkie potrzebne
     // propertiesy potrzebne do polaczenia z serwerem smtp
     private Properties prepareProperties(){
@@ -86,4 +91,6 @@ public class EmailSender implements EmailRepository {
         });
         return session;
     }
+
+
 }

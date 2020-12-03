@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h3>Witamy <span th:text="${username}"></span> w bibliotece 'Żółć'</h3>
+    <p>Witaj w bibliotece 'Żółć' by Jasmistrz</p>
+    <p>Kliknij w poniższy link, aby dokończyć rejestrację</p>
+<p>
+    <a th:href="${'http://localhost:8080/register/' + token}">
+        Aktywuj konto dla<span th:text="${username}"></span>
+    </a>
+</p>
+<p>
+    Twój token jest ważny do:<span th:text="${validTo}"></span>
+</p>
+</body>
+</html>

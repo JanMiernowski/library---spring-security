@@ -3,10 +3,15 @@ package pl.jmiernowski.domain.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import pl.jmiernowski.domain.email.Email;
 import pl.jmiernowski.domain.email.EmailRepository;
+import pl.jmiernowski.domain.user.token.Token;
+import pl.jmiernowski.domain.user.token.TokenRepository;
 import pl.jmiernowski.external.user.UserEntity;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,22 +24,54 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final EmailRepository emailRepository;
+    private final TemplateEngine templateEngine;
+    private final TokenRepository tokenRepository;
 
     public void create(UserDto dto){
 
         UserEntity entity = userMapper.toEntity(dto);
         entity.encodePassword(passwordEncoder);
         userRepository.create(entity);
-        sendWelcomeEmail(dto);
+
+        Token token = tokenRepository.generateForUser(dto.getUsername());
+
+        sendActivationEmail(dto, token);
     }
 
-    private void sendWelcomeEmail(UserDto dto) {
+    public boolean activate(String token){
+        Optional<Token> foundedToken = tokenRepository.getByToken(token)
+                .filter(tok -> tok.getValidTo().isAfter(LocalDateTime.now()));
+        if(foundedToken.isEmpty()){
+            return false;
+        }
+
+        foundedToken.ifPresent(tok ->
+                userRepository.activate(tok.getUsername()));
+
+        return true;
+    }
+
+    //tworzymy content z szablonu html
+    private String prepareActivationMail(String username, String token, String validTo){
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("username", username);
+        variables.put("token", token);
+        variables.put("validTo", validTo);
+
+        Context context = new Context();
+        context.setVariables(variables);
+
+        return templateEngine.process("/email/activationEmail.html",context);
+    }
+
+    private void sendActivationEmail(UserDto dto, Token token) {
         Set<String> attachments = new HashSet<>();
-        attachments.add("attachement/CV.pdf");
+        attachments.add("attachment/CV.pdf");
         emailRepository.sendEmail(
                 new Email(dto.getUsername(),
                         "Witamy w bibliotece 'Żółć'!",
-                        "Witaj w naszej bibliotece 'Żółć' by Jasmistrz",
+                        prepareActivationMail(dto.getUsername(), token.getToken(), token.getValidTo().toString()),
                         attachments));
     }
 

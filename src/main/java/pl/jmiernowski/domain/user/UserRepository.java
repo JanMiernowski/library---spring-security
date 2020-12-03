@@ -14,4 +14,5 @@ public interface UserRepository {
     List<UserEntity> getAll();
     Optional<UserEntity> findByUsername(String username);
 
+    void activate(String username);
 }

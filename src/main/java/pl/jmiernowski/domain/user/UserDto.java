@@ -27,6 +27,7 @@ public class UserDto {
     private String username;
     private String password;
     private String role;
+    private Boolean enabled = false;
 
     private List<BookDto> borrowedBooks = new ArrayList<>();
 
@@ -43,6 +44,14 @@ public class UserDto {
         this.role = role;
     }
 
+    public UserDto(Long id, String username, String password, String role, List<BookDto> borrowedBooks) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.borrowedBooks = borrowedBooks;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -54,6 +63,7 @@ public class UserDto {
                 .username(userEntity.getUsername())
                 .password(userEntity.getPassword())
                 .role(userEntity.getRole())
+                .enabled(userEntity.getEnabled())
                 .borrowedBooks(UserDto.toDtoList(userEntity.getBorrowedBooks()))
                 .build();
     }
@@ -73,6 +83,7 @@ public class UserDto {
                 .username(this.username)
                 .password(this.getPassword())
                 .role(this.getRole())
+                .enabled(this.enabled)
                 .borrowedBooks(UserDto.toEntitesList(this.borrowedBooks))
                 .build();
     }

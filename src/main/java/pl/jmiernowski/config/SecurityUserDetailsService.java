@@ -33,7 +33,9 @@ public class SecurityUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities =
                 Arrays.asList(new SimpleGrantedAuthority("ROLE_" + dto.getRole()));
 
-        return new User(dto.getUsername(), dto.getPassword(), authorities);
+        return new User(dto.getUsername(), dto.getPassword(), dto.getEnabled()
+                ,true, true, true
+                ,authorities);
 
     }
 

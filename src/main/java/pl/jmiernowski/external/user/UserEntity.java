@@ -5,8 +5,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.jmiernowski.external.book.BookEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +28,12 @@ public class UserEntity {
     @Column(nullable = false)
     private String role;
 
+    private Boolean enabled = false;
+
+    public void activate(){
+        enabled = true;
+    }
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<BookEntity> borrowedBooks;
     @Transient
@@ -40,6 +44,15 @@ public class UserEntity {
         this.password = password;
         this.role = role;
         this.borrowedBooks = new ArrayList<>();
+    }
+
+    public UserEntity(Long id, String username, String password, String role, List<BookEntity> borrowedBooks, UUID uuid) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.borrowedBooks = borrowedBooks;
+        this.uuid = uuid;
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {

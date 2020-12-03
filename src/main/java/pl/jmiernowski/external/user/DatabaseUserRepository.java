@@ -44,4 +44,12 @@ public class DatabaseUserRepository implements UserRepository {
     public Optional<UserEntity> findByUsername(String username) {
         return jpaUserRepository.findByUsername(username);
     }
+
+    @Override
+    public void activate(String username) {
+        jpaUserRepository.findByUsername(username).ifPresent(user ->{
+                user.activate();
+                jpaUserRepository.save(user);
+        });
+    }
 }
