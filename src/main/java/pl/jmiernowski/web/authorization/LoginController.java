@@ -56,7 +56,7 @@ public class LoginController {
         Optional<Token> byToken = tokenRepository.getByToken(token);
         ModelAndView mav = new ModelAndView();
         if (byToken.isPresent()) {
-            if(byToken.get().getValidTo().isAfter(LocalDateTime.now())) {
+            if(byToken.get().getValidTo().isAfter(LocalDateTime.now().plusDays(1))) {
                 String username = byToken.get().getUsername();
                 Optional<UserDto> byUsername = userService.findByUsername(username);
                 if (byUsername.isPresent()) {
@@ -66,7 +66,7 @@ public class LoginController {
                     return mav;
                 }
             }else{
-                mav.addObject("token", byToken.get().toString());
+                mav.addObject("token", byToken.get().getToken());
                 mav.setViewName("tokenHasExpired.html");
                 return mav;
             }
@@ -92,17 +92,7 @@ public class LoginController {
         return "setNewPassword.html";
     }
 
-    @PostMapping("/login/sendTokenAgain")
-    public String sendTokenAgain(@RequestParam String token){
-        Optional<Token> byToken = tokenRepository.getByToken(token);
-        if(byToken.isPresent()){
-            String username = byToken.get().getUsername();
-            Optional<UserDto> byUsername = userService.findByUsername(username);
-            tokenRepository.deleteToken(token);
-            userService.sendRestartPasswordEmail(byUsername.get());
-            return "newTokenWasSent.html";
-        }
-        return "newTokenWasntSent.html";
-    }
+
 
 }
+

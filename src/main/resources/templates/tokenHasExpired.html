@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<h2>Twój token <span th:text="${token}" name="token"></span> wygasł</h2>
-    <p><a th:href="@{/login/sendTokenAgain}">Wyślij token jeszcze raz</a></p>
+<h2>Twój token <span th:text="${token}"></span> wygasł</h2>
+    <p><a th:href="${'http://localhost:8080/expired/' + token}">Wyślij token jeszcze raz</a></p>
 </body>
 </html>
