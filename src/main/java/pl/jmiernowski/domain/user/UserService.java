@@ -64,6 +64,18 @@ public class UserService {
 
         return templateEngine.process("/email/activationEmail.html",context);
     }
+    private String prepareRestartPasswordMail(String username, String token, String validTo){
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("username", username);
+        variables.put("token", token);
+        variables.put("validTo", validTo);
+
+        Context context = new Context();
+        context.setVariables(variables);
+
+        return templateEngine.process("/email/restartPasswordMail.html",context);
+    }
 
     private void sendActivationEmail(UserDto dto, Token token) {
         Set<String> attachments = new HashSet<>();
@@ -75,11 +87,22 @@ public class UserService {
                         attachments));
     }
 
+    public void sendRestartPasswordEmail(UserDto dto) {
+        Token token = tokenRepository.generateForUser(dto.getUsername());
+        Set<String> attachments = new HashSet<>();
+        emailRepository.sendEmail(
+                new Email(dto.getUsername(),
+                        "Restart hasła",
+                        prepareRestartPasswordMail(dto.getUsername(), token.getToken(), token.getValidTo().toString()),
+                        attachments));
+    }
+
     public void update(UserDto dto){
         if(getById(dto.getId()).isEmpty()){
             throw new IllegalStateException("Updated object not exists");
         }
         UserEntity entity = userMapper.toEntity(dto);
+
         userRepository.update(entity);
     }
     public void delete(Long id){

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h2>Twój token <span th:text="${token}" name="token"></span> wygasł</h2>
+    <p><a th:href="@{/login/sendTokenAgain}">Wyślij token jeszcze raz</a></p>
+</body>
+</html>

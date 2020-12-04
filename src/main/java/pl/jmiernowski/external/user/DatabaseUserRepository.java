@@ -52,4 +52,9 @@ public class DatabaseUserRepository implements UserRepository {
                 jpaUserRepository.save(user);
         });
     }
+
+    @Override
+    public void restartPassword(String username) {
+
+    }
 }

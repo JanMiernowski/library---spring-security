@@ -62,7 +62,30 @@ public class EmailSender implements EmailRepository {
         }
     }
 
+    @Override
+    public void sendResetPasswordEmail(Email email) {
+        Message msg = new MimeMessage(createSession());
+        try {
+            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getSendTo(),false));
+            msg.setSubject(email.getTitle());
+            msg.setFrom(new InternetAddress(smtpProperties.getFrom(),false));
+            //msg.setContent(email.getContent(), "text/html; charset=UTF-8");
 
+            //teraz bedziemy tworzyc calosc maila z podzielonych czesci
+            MimeBodyPart content = new MimeBodyPart();//dodajemy tresc
+            content.setContent(email.getContent(),"text/html; charset=UTF-8");
+
+            //dzielimy naszego maila na wiele czesci
+            Multipart multipart = new MimeMultipart();// nasza calosc maila
+            multipart.addBodyPart(content);
+
+            msg.setContent(multipart);
+
+            Transport.send(msg);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     //przygotowujemy obiekt, ktory zawiera wszytkie potrzebne

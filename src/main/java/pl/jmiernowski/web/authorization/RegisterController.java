@@ -28,11 +28,15 @@ public class RegisterController {
     }
 
     @GetMapping("/{token}")
-    public String activateAccount(@PathVariable String token){
+    public ModelAndView activateAccount(@PathVariable String token){
+        ModelAndView mav = new ModelAndView();
         if(userService.activate(token)){
-            return "activateSuccess.html";
+            mav.setViewName("activateSuccess.html");
+            return mav;
         }
-        return "activateFailure.html";
+        mav.addObject("token", token);
+        mav.setViewName("tokenHasExpired.html");
+        return mav;
     }
 
 }

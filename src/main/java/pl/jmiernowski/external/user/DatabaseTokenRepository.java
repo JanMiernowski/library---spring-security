@@ -31,4 +31,12 @@ public class DatabaseTokenRepository implements TokenRepository {
                 .map(entity -> new Token(entity.getToken(),
                         entity.getUsername(),entity.getValidTo()));
     }
+
+    @Override
+    public void deleteToken(String token) {
+        if(getByToken(token).isPresent()) {
+            Token token1 = getByToken(token).get();
+            activationTokenRepository.delete(token1.toEntity());
+        }
+    }
 }

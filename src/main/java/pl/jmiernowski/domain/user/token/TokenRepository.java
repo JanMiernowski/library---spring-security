@@ -6,4 +6,5 @@ public interface TokenRepository {
 
     Token generateForUser(String user);
     Optional<Token> getByToken(String token);
+    void deleteToken(String token);
 }

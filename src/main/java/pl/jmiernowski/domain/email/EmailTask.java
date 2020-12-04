@@ -6,4 +6,9 @@ public class EmailTask implements EmailRepository{
     public void sendEmail(Email email) {
 
     }
+
+    @Override
+    public void sendResetPasswordEmail(Email email) {
+
+    }
 }

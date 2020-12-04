@@ -15,4 +15,5 @@ public interface UserRepository {
     Optional<UserEntity> findByUsername(String username);
 
     void activate(String username);
+    void restartPassword(String username);
 }
