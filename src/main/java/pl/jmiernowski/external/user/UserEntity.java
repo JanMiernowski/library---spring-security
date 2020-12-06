@@ -3,11 +3,10 @@ package pl.jmiernowski.external.user;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.jmiernowski.external.book.BookEntity;
+import pl.jmiernowski.external.email.EmailEntity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -35,7 +34,9 @@ public class UserEntity {
     }
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<BookEntity> borrowedBooks;
+    private Set<BookEntity> borrowedBooks;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<EmailEntity> emails;
     @Transient
     private UUID uuid = UUID.randomUUID();
 
@@ -43,10 +44,10 @@ public class UserEntity {
         this.username = username;
         this.password = password;
         this.role = role;
-        this.borrowedBooks = new ArrayList<>();
+        this.borrowedBooks = new HashSet<>();
     }
 
-    public UserEntity(Long id, String username, String password, String role, List<BookEntity> borrowedBooks, UUID uuid) {
+    public UserEntity(Long id, String username, String password, String role, Set<BookEntity> borrowedBooks, UUID uuid) {
         this.id = id;
         this.username = username;
         this.password = password;

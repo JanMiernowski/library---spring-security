@@ -65,7 +65,7 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         UserDto dto = userService.findByUsername(name).orElse(new UserDto());
-        BookDto removedBook = dto.getBorrowedBooks().remove(id);
+        BookDto removedBook = dto.getBorrowedBooks().stream().filter(o -> o.getId() == id).findFirst().get();
         removedBook.setIsBorrow(false);
         bookService.update(removedBook);
         userService.update(dto);

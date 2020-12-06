@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Przeliczanie kursów</title>
+</head>
+<body>
+    <form method="post" th:action="@{/nbp}" th:object="${userInput}">
+        Podaj kwotę do przeliczenia <input type="text" required th:field="*{amount}">
+        Podaj dzień <input type="date" th:field="*{localDate}" required>
+        <input type="submit" value="OK">
+    </form>
+    <table th:if="${rates.size() > 0}" border="1px">
+        Kwota<span th:text="${userAmount}"></span>zł<br/>
+        <tr>
+            <td>Kod Waluty</td>
+            <td>Kwota</td>
+        </tr>
+        <tr th:each="i : ${rates}">
+            <td><span th:text="${i.getCode()}"></span></td>
+            <td><span th:text="${#numbers.formatDecimal((i.getAsk() * userAmount), 0, 2)}"></span></td>
+        </tr>
+    </table>
+    <a th:href="@{/}">Powrót</a>
+</body>
+</html>

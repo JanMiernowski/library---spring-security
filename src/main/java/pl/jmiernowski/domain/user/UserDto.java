@@ -5,15 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.jmiernowski.domain.book.BookDto;
+import pl.jmiernowski.domain.email.EmailDto;
 import pl.jmiernowski.external.book.BookEntity;
+import pl.jmiernowski.external.email.EmailEntity;
 import pl.jmiernowski.external.user.UserEntity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
@@ -29,7 +26,8 @@ public class UserDto {
     private String role;
     private Boolean enabled = false;
 
-    private List<BookDto> borrowedBooks = new ArrayList<>();
+    private Set<BookDto> borrowedBooks = new HashSet<>();
+    private Set<EmailDto> emails = new HashSet<>();
 
     public UserDto(String username, String password, String role) {
         this.username = username;
@@ -44,7 +42,7 @@ public class UserDto {
         this.role = role;
     }
 
-    public UserDto(Long id, String username, String password, String role, List<BookDto> borrowedBooks) {
+    public UserDto(Long id, String username, String password, String role, Set<BookDto> borrowedBooks) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -64,16 +62,25 @@ public class UserDto {
                 .password(userEntity.getPassword())
                 .role(userEntity.getRole())
                 .enabled(userEntity.getEnabled())
-                .borrowedBooks(UserDto.toDtoList(userEntity.getBorrowedBooks()))
+                .borrowedBooks(UserDto.toDtoListBooks(userEntity.getBorrowedBooks()))
+                .emails(UserDto.toDtoListEmails(userEntity.getEmails()))
                 .build();
     }
 
-    private static List<BookDto> toDtoList(List<BookEntity> entities) {
+    private static Set<BookDto> toDtoListBooks(Set<BookEntity> entities) {
         return Objects.isNull(entities) ?
-                List.of() :
+                Set.of() :
                 entities.stream()
                         .map(BookDto::toDto)
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
+
+    }
+    private static Set<EmailDto> toDtoListEmails(Set<EmailEntity> entities) {
+        return Objects.isNull(entities) ?
+                Set.of() :
+                entities.stream()
+                        .map(EmailDto::toDto)
+                        .collect(Collectors.toSet());
 
     }
 
@@ -84,16 +91,26 @@ public class UserDto {
                 .password(this.getPassword())
                 .role(this.getRole())
                 .enabled(this.enabled)
-                .borrowedBooks(UserDto.toEntitesList(this.borrowedBooks))
+                .borrowedBooks(UserDto.toEntitesListBook(this.borrowedBooks))
+                .emails(UserDto.toEntitesListEmail(this.emails))
                 .build();
     }
 
-    private static List<BookEntity> toEntitesList(List<BookDto> dtos) {
+    private static Set<BookEntity> toEntitesListBook(Set<BookDto> dtos) {
         return Objects.isNull(dtos) ?
-                List.of() :
+                Set.of() :
                 dtos.stream()
                         .map(BookDto::toEntity)
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
+
+    }
+
+    private static Set<EmailEntity> toEntitesListEmail (Set<EmailDto> dtos) {
+        return Objects.isNull(dtos) ?
+                Set.of() :
+                dtos.stream()
+                        .map(EmailDto::toEntity)
+                        .collect(Collectors.toSet());
 
     }
 }

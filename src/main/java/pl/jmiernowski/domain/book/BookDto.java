@@ -32,6 +32,8 @@ public class BookDto {
     private String isbn;
     @NotNull
     private Boolean isBorrow = false;
+    @NotNull
+    private Double price = 0.0;
 
 
     public BookEntity toEntity(){
@@ -42,6 +44,7 @@ public class BookDto {
                 .title(this.getTitle())
                 .isbn(this.getIsbn())
                 .isBorrow(this.getIsBorrow())
+                .price(this.price)
                 .build();
     }
 
@@ -56,6 +59,7 @@ public class BookDto {
                 .title(entity.getTitle())
                 .isbn(entity.getIsbn())
                 .isBorrow(entity.getIsBorrow())
+                .price(entity.getPrice())
                 .build();
     }
 
@@ -70,5 +74,12 @@ public class BookDto {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
+    }
+
+    public BookDto(@NotBlank @NotNull String title, @NotBlank @NotNull String author, @NotBlank @NotNull String isbn, @NotNull Double price) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.price = price;
     }
 }

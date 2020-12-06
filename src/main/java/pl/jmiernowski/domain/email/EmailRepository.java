@@ -1,7 +1,9 @@
 package pl.jmiernowski.domain.email;
 
+import pl.jmiernowski.external.email.EmailEntity;
+
 public interface EmailRepository {
 
-    void sendEmail(Email email);
-    void sendResetPasswordEmail(Email email);
+    EmailEntity create(EmailEntity entity);
+
 }

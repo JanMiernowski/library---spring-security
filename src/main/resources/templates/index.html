@@ -17,11 +17,24 @@
             <td>Tytuł</td>
             <td>Autor</td>
             <td>isbn</td>
+            <td>cena
+                <form method="post" th:action="@{/changeCurrency}" th:object="${currency}" >
+                    <select th:if="${mid==1}" th:field="*{currencyCode}">
+                        <option value="PLN">Złotówki</option>
+                        <option value="EUR">Euro</option>
+                    </select>
+                    <select th:unless="${mid==1}" th:field="*{currencyCode}">
+                        <option value="EUR">Euro</option>
+                        <option value="PLN">Złotówki</option>
+                    </select>
+                    <input type="submit" value="Ok">
+                </form></td>
         </tr>
         <tr th:each="book : ${books}" >
             <td th:text="${book.title}"></td>
             <td th:text="${book.author}"></td>
             <td th:text="${book.isbn}"></td>
+            <td th:text="${book.price} * ${mid}"></td>
             <td sec:authorize="hasRole('USER')">
                 <button><a th:href="@{/users/} + ${book.getId()}">Wypożycz</a></button>
             </td>
@@ -41,5 +54,6 @@
 
 
 <div th:replace="fragments/admin :: addBook"/>
+<a th:href="@{/nbp}">Nbp</a>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package pl.jmiernowski.domain.email;
+package pl.jmiernowski.domain.sendEmail;
 
 public class EmailTask implements EmailRepository{
 

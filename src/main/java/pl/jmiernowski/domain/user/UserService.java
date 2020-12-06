@@ -5,8 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import pl.jmiernowski.domain.email.Email;
-import pl.jmiernowski.domain.email.EmailRepository;
+import pl.jmiernowski.domain.email.EmailService;
+import pl.jmiernowski.domain.sendEmail.Email;
+import pl.jmiernowski.domain.sendEmail.EmailRepository;
 import pl.jmiernowski.domain.user.token.Token;
 import pl.jmiernowski.domain.user.token.TokenRepository;
 import pl.jmiernowski.external.user.UserEntity;
@@ -85,6 +86,8 @@ public class UserService {
                         "Witamy w bibliotece 'Żółć'!",
                         prepareActivationMail(dto.getUsername(), token.getToken(), token.getValidTo().toString()),
                         attachments));
+
+
     }
 
     public void sendRestartPasswordEmail(UserDto dto) {

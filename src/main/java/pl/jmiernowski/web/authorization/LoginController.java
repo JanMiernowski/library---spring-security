@@ -56,7 +56,9 @@ public class LoginController {
         Optional<Token> byToken = tokenRepository.getByToken(token);
         ModelAndView mav = new ModelAndView();
         if (byToken.isPresent()) {
-            if(byToken.get().getValidTo().isAfter(LocalDateTime.now().plusDays(1))) {
+            //tu mozna dodac plusDays(1) do localDateTime zeby sprawdzic jak zachowa sie api
+            // podczas gdy token wygasnie
+            if(byToken.get().getValidTo().isAfter(LocalDateTime.now())) {
                 String username = byToken.get().getUsername();
                 Optional<UserDto> byUsername = userService.findByUsername(username);
                 if (byUsername.isPresent()) {

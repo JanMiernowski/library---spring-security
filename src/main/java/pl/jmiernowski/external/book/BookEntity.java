@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
-@Table(name = "books")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,6 +27,8 @@ public class BookEntity {
     private String isbn;
     @Column(nullable = false)
     private Boolean isBorrow = false;
+    @Column(nullable = false)
+    private Double price;
 
     @Transient
     private final UUID uuid = UUID.randomUUID();

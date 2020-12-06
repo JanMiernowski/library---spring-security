@@ -1,13 +1,13 @@
-package pl.jmiernowski.external.email;
+package pl.jmiernowski.external.sendEmail;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
-import org.thymeleaf.context.Context;
 import pl.jmiernowski.config.SmtpProperties;
-import pl.jmiernowski.domain.email.Email;
-import pl.jmiernowski.domain.email.EmailRepository;
+import pl.jmiernowski.domain.email.EmailDto;
+import pl.jmiernowski.domain.email.EmailService;
+import pl.jmiernowski.domain.sendEmail.Email;
+import pl.jmiernowski.domain.sendEmail.EmailRepository;
 
 
 import javax.mail.*;
@@ -16,8 +16,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Component
@@ -25,6 +23,7 @@ import java.util.Properties;
 public class EmailSender implements EmailRepository {
 
     private final SmtpProperties smtpProperties;
+    private final EmailService emailService;
 
     @Override
     public void sendEmail(Email email) {
@@ -53,8 +52,10 @@ public class EmailSender implements EmailRepository {
                 }
                 multipart.addBodyPart(attachment);// dodajemy zalaczniki
             }
-
             msg.setContent(multipart);
+
+            EmailDto emailDto = email.toEmailDto();
+            emailService.create(emailDto);
 
             Transport.send(msg);
         } catch (MessagingException | IOException e) {
@@ -80,6 +81,9 @@ public class EmailSender implements EmailRepository {
             multipart.addBodyPart(content);
 
             msg.setContent(multipart);
+
+            EmailDto emailDto = email.toEmailDto();
+            emailService.create(emailDto);
 
             Transport.send(msg);
         } catch (MessagingException e) {

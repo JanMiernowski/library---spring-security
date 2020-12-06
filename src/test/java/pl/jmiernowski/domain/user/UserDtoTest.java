@@ -16,7 +16,7 @@ class UserDtoTest {
     @Test
     void shouldReturnUserDtoFromUserEntity(){
         //given
-        UserEntity entity = new UserEntity(1L,"username","password","ADMIN", new ArrayList<>(), UUID.randomUUID());
+        UserEntity entity = new UserEntity(1L,"username","password","ADMIN", new HashSet<>(), UUID.randomUUID());
         //when
         UserDto dto = UserDto.toDto(entity);
         //then
@@ -25,13 +25,13 @@ class UserDtoTest {
         assertEquals(dto.getPassword(), entity.getPassword());
         assertEquals(dto.getRole(), entity.getRole());
         assertIterableEquals(dto.getBorrowedBooks(),
-                entity.getBorrowedBooks().stream().map(BookDto::toDto).collect(Collectors.toList()));
+                entity.getBorrowedBooks().stream().map(BookDto::toDto).collect(Collectors.toSet()));
     }
 
     @Test
     void shouldReturnUserEntityFromUserDto(){
         //given
-        UserDto dto = new UserDto(1L,"username","password","ADMIN", new ArrayList<>());
+        UserDto dto = new UserDto(1L,"username","password","ADMIN", new HashSet<>());
         //when
        UserEntity entity = dto.toEntity();
         //then
@@ -40,7 +40,7 @@ class UserDtoTest {
         assertEquals(entity.getPassword(), dto.getPassword());
         assertEquals(entity.getRole(), dto.getRole());
         assertIterableEquals(entity.getBorrowedBooks(),
-                dto.getBorrowedBooks().stream().map(BookDto::toEntity).collect(Collectors.toList()));
+                dto.getBorrowedBooks().stream().map(BookDto::toEntity).collect(Collectors.toSet()));
     }
 
 }
