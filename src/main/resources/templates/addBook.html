@@ -6,14 +6,17 @@
 </head>
 <body>
     <form method="post" th:action="@{/books/addBook}" th:object="${book}">
-        Tytuł: <input type="text" th:field="*{title}">
+        Tytuł: <input type="text" th:field="*{title}" required>
         <span class="warning" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
         <br/>
-        Autor: <input type="text" th:field="*{author}">
-        <span class="warning" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
+        Autor: <input type="text" th:field="*{author}" required>
+        <span class="warning" th:if="${#fields.hasErrors('author')}" th:errors="*{author} "></span>
         <br/>
-        Isbn: <input type="text" th:field="*{isbn}">
+        Isbn: <input type="text" th:field="*{isbn}" required>
         <span class="warning" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></span>
+        <br/>
+        Cena: <input type="text" th:field="*{price}" required>
+        <span class="warning" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
         <br/>
         <input type="submit" value="Dodaj">
     </form>

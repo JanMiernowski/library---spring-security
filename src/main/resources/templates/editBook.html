@@ -6,9 +6,10 @@
 </head>
 <body>
 <form method="post" th:action="@{/books/editBook/} + ${book.id}" th:object="${book}">
-    Tytuł: <input type="text" th:field="*{title}">
-    Autor: <input type="text" th:field="*{author}">
-    Isbn: <input type="text" th:field="*{isbn}">
+    Tytuł: <input type="text" th:field="*{title}" required>
+    Autor: <input type="text" th:field="*{author}" required>
+    Isbn: <input type="text" th:field="*{isbn}" required>
+    Cena: <input type="text" th:field="*{price}" required>
     <input type="submit" value="Edytuj">
 </form>
 </body>

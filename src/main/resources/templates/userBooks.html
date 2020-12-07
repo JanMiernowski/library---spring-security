@@ -9,7 +9,7 @@
     <span th:text="${book.author}"></span>,
     <span th:text="${book.title}"></span>,
     <span th:text="${book.isbn}"></span>
-    <button><a th:href="@{/users/giveBack/} + ${i.index}">Oddaj</a></button>
+    <button><a th:href="@{/users/giveBack/} + ${book.isbn}">Oddaj</a></button>
 </div>
 
 <a th:href="@{/}">Powrót</a>

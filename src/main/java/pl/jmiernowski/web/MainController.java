@@ -47,7 +47,7 @@ public class MainController {
         }
         Currency currency = new Currency();
 
-        mid = 1/mid;
+
         mav.addObject("mid", mid);
         mav.addObject("currency", currency);
         mav.addObject("books", allAvailableBooks);
@@ -66,13 +66,13 @@ public class MainController {
             int dayOfWeek = LocalDate.now().getDayOfWeek().getValue();
             CurrencyRateResponse currencyRate;
             if(dayOfWeek == 6){
-                currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now().minusDays(2));
-            } else if(dayOfWeek == 7){
-                currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now().minusDays(3));
-            } else {
                 currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now().minusDays(1));
+            } else if(dayOfWeek == 7){
+                currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now().minusDays(2));
+            } else {
+                currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now());
             }
-            mid = (double) (Math.round(currencyRate.getRates().get(0).getBid() * 100) / 100);
+            mid = currencyRate.getRates().get(0).getBid() * 100 / 100;
         }
         return "redirect:/";
     }

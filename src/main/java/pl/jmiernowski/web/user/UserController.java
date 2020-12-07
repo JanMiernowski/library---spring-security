@@ -17,10 +17,7 @@ import pl.jmiernowski.domain.book.BookService;
 import pl.jmiernowski.domain.user.UserDto;
 import pl.jmiernowski.domain.user.UserService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -38,7 +35,7 @@ public class UserController {
         ModelAndView mav = new ModelAndView("users.html");
         List<UserDto> all = userService.getAll().stream()
                 .filter(dto -> !dto.getRole().equalsIgnoreCase("admin"))
-                .collect(Collectors.toList());;
+                .collect(Collectors.toList());
         mav.addObject("usersList", all);
         return mav;
     }
@@ -59,15 +56,17 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/giveBack/{id}")
-    String giveBackBook(@PathVariable int id){
+    @GetMapping("/giveBack/{isbn}")
+    String giveBackBook(@PathVariable String isbn){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         UserDto dto = userService.findByUsername(name).orElse(new UserDto());
-        BookDto removedBook = dto.getBorrowedBooks().stream().filter(o -> o.getId() == id).findFirst().get();
+        BookDto removedBook = dto.getBorrowedBooks().stream().filter(o -> o.getIsbn().equals(isbn)).findFirst().get();
+        dto.getBorrowedBooks().remove(removedBook);
         removedBook.setIsBorrow(false);
         bookService.update(removedBook);
+        Set<BookDto> borrowedBooks = dto.getBorrowedBooks();
         userService.update(dto);
         return "redirect:/books/userBooks";
     }
