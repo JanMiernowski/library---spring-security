@@ -6,10 +6,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.jmiernowski.domain.book.BookDto;
 import pl.jmiernowski.domain.email.EmailDto;
+import pl.jmiernowski.domain.validator.Email;
+import pl.jmiernowski.domain.validator.UniqueIsbn;
+import pl.jmiernowski.domain.validator.UniqueUsername;
 import pl.jmiernowski.external.book.BookEntity;
 import pl.jmiernowski.external.email.EmailEntity;
 import pl.jmiernowski.external.user.UserEntity;
 
+import javax.validation.constraints.NotBlank;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,6 +25,9 @@ import java.util.stream.Collectors;
 public class UserDto {
 
     private Long id;
+    @NotBlank
+    @UniqueUsername
+    @Email
     private String username;
     private String password;
     private String role;

@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Rejestracja</title>
+    <style>
+        .warning{
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <form method="post" th:action="@{/register}" th:object="${user}">
-    Nazwa: <input type="text" th:field="*{username}"/></br>
+    Nazwa: <input type="text" th:field="*{username}"/>
+    <span class="warning" th:if="${ #fields.hasErrors('username')}" th:errors="*{username}"></span></br>
     Hasło: <input type="password" th:field="*{password}"/></br>
     Rola: <select th:field="*{role}">
     <option value="ADMIN">Bibliotekarz</option>

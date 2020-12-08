@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import pl.jmiernowski.config.NbpProperties;
 
@@ -27,8 +28,13 @@ public class ExchangeRateClient {
         String address =  String.format("%s/exchangerates/rates/c/%s/%s/?format=json",
                 nbpProperties.getUrl(), currency, forDate);
 
-        ResponseEntity<String> rateResponse =
-                restTemplate.exchange(address, HttpMethod.GET, HttpEntity.EMPTY, String.class);
+        ResponseEntity<String> rateResponse;
+        try {
+            rateResponse =
+                    restTemplate.exchange(address, HttpMethod.GET, HttpEntity.EMPTY, String.class);
+        } catch (HttpClientErrorException ex)   {
+            rateResponse = new ResponseEntity<String>(ex.getStatusCode());
+        }
 
 
         if(rateResponse.getStatusCode().is2xxSuccessful()){
@@ -39,6 +45,7 @@ public class ExchangeRateClient {
             return findCurrencyRate(currency, forDate.minusDays(1));
         }
 
+
         throw new IllegalStateException("It was impossible to fetch currency rate " + rateResponse.getStatusCodeValue());
     }
 
@@ -46,9 +53,13 @@ public class ExchangeRateClient {
         String address =  String.format("%s/exchangerates/tables/b/%s",
                 nbpProperties.getUrl(), forDate);
 
-        ResponseEntity<String> rateResponse =
-                restTemplate.exchange(address, HttpMethod.GET, HttpEntity.EMPTY, String.class);
-        rateResponse.getBody();
+        ResponseEntity<String> rateResponse;
+        try {
+            rateResponse =
+                    restTemplate.exchange(address, HttpMethod.GET, HttpEntity.EMPTY, String.class);
+        } catch (HttpClientErrorException ex)   {
+            rateResponse = new ResponseEntity<String>(ex.getStatusCode());
+        }
 
         if(rateResponse.getStatusCode().is2xxSuccessful()){
 
@@ -57,7 +68,7 @@ public class ExchangeRateClient {
 
 
         if(rateResponse.getStatusCode().is4xxClientError()){
-            return findCurrencyRateForTableAandB(forDate);
+            return findCurrencyRateForTableAandB(forDate.minusDays(1));
         }
 
         throw new IllegalStateException("It was impossible to fetch currency rate " + rateResponse.getStatusCodeValue());
@@ -67,9 +78,13 @@ public class ExchangeRateClient {
         String address =  String.format("%s/exchangerates/tables/c/%s",
                 nbpProperties.getUrl(), forDate);
 
-        ResponseEntity<String> rateResponse =
-                restTemplate.exchange(address, HttpMethod.GET, HttpEntity.EMPTY, String.class);
-        rateResponse.getBody();
+        ResponseEntity<String> rateResponse;
+        try {
+            rateResponse =
+                    restTemplate.exchange(address, HttpMethod.GET, HttpEntity.EMPTY, String.class);
+        } catch (HttpClientErrorException ex)   {
+            rateResponse = new ResponseEntity<String>(ex.getStatusCode());
+        }
 
         if(rateResponse.getStatusCode().is2xxSuccessful()){
 
@@ -78,7 +93,7 @@ public class ExchangeRateClient {
 
 
         if(rateResponse.getStatusCode().is4xxClientError()){
-            return findCurrencyRateForTableC(forDate);
+            return findCurrencyRateForTableC(forDate.minusDays(1));
         }
 
         throw new IllegalStateException("It was impossible to fetch currency rate " + rateResponse.getStatusCodeValue());

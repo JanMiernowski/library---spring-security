@@ -63,15 +63,10 @@ public class MainController {
         if(currencyCode.equals("PLN")){
             mid=1.0;
         }else {
-            int dayOfWeek = LocalDate.now().getDayOfWeek().getValue();
             CurrencyRateResponse currencyRate;
-            if(dayOfWeek == 6){
-                currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now().minusDays(1));
-            } else if(dayOfWeek == 7){
+
                 currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now().minusDays(2));
-            } else {
-                currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now());
-            }
+
             mid = currencyRate.getRates().get(0).getBid() * 100 / 100;
         }
         return "redirect:/";

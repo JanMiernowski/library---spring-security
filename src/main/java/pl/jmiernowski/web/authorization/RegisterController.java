@@ -1,11 +1,18 @@
 package pl.jmiernowski.web.authorization;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.jmiernowski.domain.user.UserDto;
 import pl.jmiernowski.domain.user.UserService;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,7 +29,16 @@ public class RegisterController {
     }
 
     @PostMapping
-    public String handleUserRegistration(@ModelAttribute UserDto dto) {
+    public String handleUserRegistration(@ModelAttribute("user") @Valid UserDto dto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            List<String> globalErrors = bindingResult.getGlobalErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            model.addAttribute("globalErrors", globalErrors);
+            model.addAttribute("user", dto);
+            return "register.html";
+        }
         userService.create(dto);
         return "redirect:/login";
     }
