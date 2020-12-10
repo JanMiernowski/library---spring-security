@@ -49,4 +49,9 @@ public class DatabaseBookRepository implements BookRepository {
         return jpaBookRepository.findByAuthor(author);
     }
 
+    @Override
+    public Optional<BookEntity> findByIsbn(String isbn) {
+        return jpaBookRepository.findByIsbn(isbn);
+    }
+
 }

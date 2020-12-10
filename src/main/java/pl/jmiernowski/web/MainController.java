@@ -2,14 +2,12 @@ package pl.jmiernowski.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
-import org.dom4j.rule.Mode;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import pl.jmiernowski.domain.book.BookDto;
 import pl.jmiernowski.domain.book.BookService;
 import pl.jmiernowski.domain.model.Currency;
-import pl.jmiernowski.domain.user.UserDto;
 import pl.jmiernowski.domain.user.UserService;
 import pl.jmiernowski.external.exchangeRate.CurrencyRateResponse;
 import pl.jmiernowski.external.exchangeRate.ExchangeRateClient;
@@ -32,7 +30,7 @@ public class MainController {
     @GetMapping
     public ModelAndView displayMainPage() {
         if (init) {
-            setInit();
+            setInitForTests();
             init = false;
         }
         ModelAndView mav = new ModelAndView();
@@ -72,7 +70,7 @@ public class MainController {
         return "redirect:/";
     }
 
-    private void setInit() {
+    private void setInitForTests() {
         BookDto dto1 = new BookDto( "title1", "author1", "isbn1", 20.0);
         BookDto dto2 = new BookDto( "title2", "author2", "isbn2", 25.0);
         BookDto dto3 = new BookDto( "title3", "author3", "isbn3",30.0);

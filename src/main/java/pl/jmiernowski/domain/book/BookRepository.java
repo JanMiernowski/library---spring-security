@@ -14,5 +14,6 @@ public interface BookRepository {
     List<BookEntity> getAll();
     Optional<BookEntity> findByTitle(String username);
     Optional<BookEntity> findByTAuthor(String username);
+    Optional<BookEntity> findByIsbn(String isbn);
 
 }

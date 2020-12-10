@@ -57,7 +57,7 @@ class BookServiceITTest {
         //given
         UserDto userDto = mock(UserDto.class);
         BookDto dto = new BookDto(null, "title", "author", "isbn");
-        BookEntity createdEntity = bookService.create(dto);
+        BookDto createdEntity = bookService.create(dto);
         BookDto dto1 = new BookDto(createdEntity.getId(), "title1", "author1", "isbn1");
         //when
         bookService.update(dto1);
@@ -92,7 +92,7 @@ class BookServiceITTest {
         BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
         BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
-        BookEntity createdEntity = bookService.create(dto1);
+        BookDto createdEntity = bookService.create(dto1);
         //when
         bookService.delete(createdEntity.getId());
         //then
@@ -107,7 +107,7 @@ class BookServiceITTest {
         BookDto dto = new BookDto(null, "title", "author", "isbn");
         bookService.create(dto);
         BookDto dto1 = new BookDto(null, "title1", "author1", "isbn1");
-        BookEntity createdEntity = bookService.create(dto1);
+        BookDto createdEntity = bookService.create(dto1);
         //when
         BookDto entity = bookService.getById(createdEntity.getId()).orElse(null);
         //then

@@ -16,16 +16,20 @@ public class BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
-    public BookEntity create(BookDto dto){
+    public BookDto create(BookDto dto){
         BookEntity entity = bookMapper.toEntity(dto);
-        return bookRepository.create(entity);
+        if(findByIsbn(dto.getIsbn()).isPresent()){
+            return dto;
+        }
+
+        return bookMapper.toDto(bookRepository.create(entity));
     }
-    public BookEntity update(BookDto dto){
+    public BookDto update(BookDto dto){
         if(getById(dto.getId()).isEmpty()){
             throw new IllegalStateException("Updated object not exists");
         }
         BookEntity entity = bookMapper.toEntity(dto);
-        return bookRepository.update(entity);
+        return bookMapper.toDto(bookRepository.update(entity));
     }
     public void delete(Long id){
         bookRepository.delete(id);
@@ -48,5 +52,9 @@ public class BookService {
     public Optional<BookDto> findByAuthor(String author){
         return bookRepository.findByTAuthor(author)
                 .map(bookMapper::toDto);
+    }
+
+    public Optional<BookDto> findByIsbn(String isbn){
+        return bookRepository.findByIsbn(isbn).map(bookMapper::toDto);
     }
 }
