@@ -14,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(of = {"uuid"})
+@Table(name = "books")
 public class BookEntity {
 
     @Id
@@ -45,4 +46,6 @@ public class BookEntity {
         this.author = author;
         this.isbn = isbn;
     }
+
+
 }

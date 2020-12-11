@@ -77,4 +77,10 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet  author="jmier"  id="1607561341000-1">
+        <renameTable
+                      newTableName="books"
+                      oldTableName="book_entity"/>
+    </changeSet>
 </databaseChangeLog>

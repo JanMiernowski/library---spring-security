@@ -42,6 +42,7 @@ public class UserService {
     public boolean activate(String token){
         Optional<Token> foundedToken = tokenRepository.getByToken(token)
                 .filter(tok -> tok.getValidTo().isAfter(LocalDateTime.now()));
+        
         if(foundedToken.isEmpty()){
             return false;
         }
