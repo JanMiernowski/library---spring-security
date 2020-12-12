@@ -1,6 +1,7 @@
 package pl.jmiernowski.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,30 +20,21 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/")
+@Getter
 public class MainController {
 
     private final BookService bookService;
-    private final UserService userService;
-    private boolean init = true;
-    private Double mid = 1.0;
+    public static Double mid = 1.0;
     private final ExchangeRateClient exchangeRateClient;
 
     @GetMapping
     public ModelAndView displayMainPage() {
-        if (init) {
-            setInitForTests();
-            init = false;
-        }
+
         ModelAndView mav = new ModelAndView();
         List<BookDto> allAvailableBooks = new ArrayList<>();
         List<BookDto> allBooks = bookService.getAll();
 
-        for (BookDto dtoBook:allBooks
-             ) {
-            if(!dtoBook.getIsBorrow()){
-                allAvailableBooks.add(dtoBook);
-            }
-        }
+        allAvailableBooks(allAvailableBooks, allBooks);
         Currency currency = new Currency();
 
 
@@ -55,6 +47,15 @@ public class MainController {
         return mav;
     }
 
+    private void allAvailableBooks(List<BookDto> allAvailableBooks, List<BookDto> allBooks) {
+        for (BookDto dtoBook: allBooks
+             ) {
+            if(!dtoBook.getIsBorrow()){
+                allAvailableBooks.add(dtoBook);
+            }
+        }
+    }
+
     @PostMapping("/changeCurrency")
     String changeCurrency(@ModelAttribute("currency") Currency currency) throws JsonProcessingException {
         String currencyCode = currency.getCurrencyCode();
@@ -63,24 +64,10 @@ public class MainController {
         }else {
             CurrencyRateResponse currencyRate;
 
-                currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now().minusDays(2));
+                currencyRate = exchangeRateClient.findCurrencyRate(currencyCode, LocalDate.now());
 
             mid = currencyRate.getRates().get(0).getBid() * 100 / 100;
         }
         return "redirect:/";
     }
-
-    private void setInitForTests() {
-        BookDto dto1 = new BookDto( "title1", "author1", "isbn1", 20.0);
-        BookDto dto2 = new BookDto( "title2", "author2", "isbn2", 25.0);
-        BookDto dto3 = new BookDto( "title3", "author3", "isbn3",30.0);
-        BookDto dto4 = new BookDto( "title4", "author4", "isbn4", 35.0);
-        bookService.create(dto1);
-        bookService.create(dto2);
-        bookService.create(dto3);
-        bookService.create(dto4);
-
-    }
-
-
 }

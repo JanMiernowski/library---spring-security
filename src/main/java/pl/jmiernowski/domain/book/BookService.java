@@ -28,8 +28,7 @@ public class BookService {
         if(getById(dto.getId()).isEmpty()){
             throw new IllegalStateException("Updated object not exists");
         }
-        BookEntity entity = bookMapper.toEntity(dto);
-        return bookMapper.toDto(bookRepository.update(entity));
+        return create(dto);
     }
     public void delete(Long id){
         bookRepository.delete(id);

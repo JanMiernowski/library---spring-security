@@ -1,6 +1,7 @@
 package pl.jmiernowski.web.book;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -73,7 +74,7 @@ public class BookController {
     @GetMapping("/editBook/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     ModelAndView editBookPage(@PathVariable Long id){
-        BookDto editBook = bookService.getById(id).orElse(new BookDto());
+        BookDto editBook = bookService.getById(id).orElseThrow(RuntimeException::new);
         ModelAndView mav = new ModelAndView();
         mav.addObject("book", editBook);
         mav.setViewName("editBook.html");
@@ -91,7 +92,7 @@ public class BookController {
     ModelAndView displayUserBooks(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        UserDto user = userService.findByUsername(name).orElse(new UserDto());
+        UserDto user = userService.findByUsername(name).orElseThrow(RuntimeException::new);
         ModelAndView mav = new ModelAndView("userBooks.html");
         mav.addObject("books", user.getBorrowedBooks());
         return mav;

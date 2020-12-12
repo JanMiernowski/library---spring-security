@@ -90,8 +90,8 @@ class UserControllerE2ETest {
         //given
         UserEntity userEntity = new UserEntity(1L, "username","password","ADMIN",new HashSet<>(), UUID.randomUUID());
         BookEntity bookEntity = new BookEntity(1L,"title","author","isbn", true, 20.0);
-        databaseUserRepository.create(userEntity);
         databaseBookRepository.create(bookEntity);
+        databaseUserRepository.create(userEntity);
         //when
         assertThrows(NestedServletException.class, () -> mockMvc.perform(MockMvcRequestBuilders.get("/users/2")));
         //then
