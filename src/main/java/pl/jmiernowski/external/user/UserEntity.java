@@ -10,6 +10,7 @@ import java.util.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -55,6 +56,7 @@ public class UserEntity {
         this.borrowedBooks = borrowedBooks;
         this.uuid = uuid;
     }
+
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
         password = passwordEncoder.encode(password);

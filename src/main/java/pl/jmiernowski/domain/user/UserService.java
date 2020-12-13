@@ -5,7 +5,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import pl.jmiernowski.domain.email.EmailService;
 import pl.jmiernowski.domain.sendEmail.Email;
 import pl.jmiernowski.domain.sendEmail.EmailRepository;
 import pl.jmiernowski.domain.user.token.Token;
@@ -40,7 +39,7 @@ public class UserService {
     }
 
     public boolean activate(String token){
-        Optional<Token> foundedToken = tokenRepository.getByToken(token)
+        Optional<Token> foundedToken = tokenRepository.getByTokenValue(token)
                 .filter(tok -> tok.getValidTo().isAfter(LocalDateTime.now()));
         
         if(foundedToken.isEmpty()){
@@ -85,7 +84,7 @@ public class UserService {
         emailRepository.sendEmail(
                 new Email(dto.getUsername(),
                         "Witamy w bibliotece 'Żółć'!",
-                        prepareActivationMail(dto.getUsername(), token.getToken(), token.getValidTo().toString()),
+                        prepareActivationMail(dto.getUsername(), token.getTokenValue(), token.getValidTo().toString()),
                         attachments));
 
 
@@ -97,7 +96,7 @@ public class UserService {
         emailRepository.sendEmail(
                 new Email(dto.getUsername(),
                         "Restart hasła",
-                        prepareRestartPasswordMail(dto.getUsername(), token.getToken(), token.getValidTo().toString()),
+                        prepareRestartPasswordMail(dto.getUsername(), token.getTokenValue(), token.getValidTo().toString()),
                         attachments));
     }
 

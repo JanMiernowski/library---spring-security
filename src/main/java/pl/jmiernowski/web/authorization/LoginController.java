@@ -1,7 +1,6 @@
 package pl.jmiernowski.web.authorization;
 
 import lombok.RequiredArgsConstructor;
-import org.dom4j.rule.Mode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +30,7 @@ public class LoginController {
 
     @GetMapping("/forgottenPassword")
     String displayForgottenPasswordPage(){
-//        ModelAndView mav = new ModelAndView();
-//        UserDto user = new UserDto();
-//        mav.addObject("user", user);
+//
         return "forgottenPassword.html";
     }
 
@@ -52,9 +49,10 @@ public class LoginController {
     }
 
     @GetMapping("/{token}")
-    public ModelAndView restartPasswordDisokayPage(@PathVariable String token) {
-        Optional<Token> byToken = tokenRepository.getByToken(token);
+    public ModelAndView restartPasswordDisplayPage(@PathVariable String token) {
+        Optional<Token> byToken = tokenRepository.getByTokenValue(token);
         ModelAndView mav = new ModelAndView();
+
         if (byToken.isPresent()) {
             //tu mozna dodac plusDays(1) do localDateTime zeby sprawdzic jak zachowa sie api
             // podczas gdy token wygasnie
@@ -68,7 +66,7 @@ public class LoginController {
                     return mav;
                 }
             }else{
-                mav.addObject("token", byToken.get().getToken());
+                mav.addObject("token", byToken.get().getTokenValue());
                 mav.setViewName("tokenHasExpired.html");
                 return mav;
             }
@@ -85,13 +83,18 @@ public class LoginController {
 
     @PostMapping("/setNewPassword")
     public String setNewPassword(@RequestParam String password, @RequestParam String username){
-        UserDto userDto = userService.findByUsername(username).get();
-        userDto.setPassword(password);
-        UserEntity entity = userDto.toEntity();
-        entity.encodePassword(passwordEncoder);
-        UserDto userDto1 = UserDto.toDto(entity);
-        userService.update(userDto1);
-        return "setNewPassword.html";
+
+        Optional<UserDto> byUsername = userService.findByUsername(username);
+        if(byUsername.isPresent()) {
+            UserDto userDto = byUsername.get();
+            userDto.setPassword(password);
+            UserEntity entity = userDto.toEntity();
+            entity.encodePassword(passwordEncoder);
+            UserDto userDto1 = UserDto.toDto(entity);
+            userService.update(userDto1);
+            return "setNewPassword.html";
+        }
+        return "contactWithAdmin.html";
     }
 
 

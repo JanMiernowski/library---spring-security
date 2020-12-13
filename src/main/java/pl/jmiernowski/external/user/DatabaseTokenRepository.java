@@ -22,21 +22,32 @@ public class DatabaseTokenRepository implements TokenRepository {
 
         activationTokenRepository.save(entity);
 
-        return new Token(entity.getToken(), entity.getUsername(), entity.getValidTo());
+        return new Token(entity.getId(),entity.getTokenValue(), entity.getUsername(), entity.getValidTo());
     }
 
     @Override
-    public Optional<Token> getByToken(String token) {
-        return activationTokenRepository.findByToken(token)
-                .map(entity -> new Token(entity.getToken(),
+    public Optional<Token> getByTokenValue(String token) {
+        return activationTokenRepository.findByTokenValue(token)
+                .map(entity -> new Token(entity.getId(), entity.getTokenValue(),
                         entity.getUsername(),entity.getValidTo()));
     }
 
     @Override
     public void deleteToken(String token) {
-        if(getByToken(token).isPresent()) {
-            Token token1 = getByToken(token).get();
+        if(getByTokenValue(token).isPresent()) {
+            Token token1 = getByTokenValue(token).get();
             activationTokenRepository.delete(token1.toEntity());
         }
     }
+
+    public void update(Token token){
+        Optional<Token> byTokenValue = getByTokenValue(token.getTokenValue());
+        if(byTokenValue.isPresent()){
+            activationTokenRepository.save(token.toEntity());
+        }
+    }
+
+
+
+
 }

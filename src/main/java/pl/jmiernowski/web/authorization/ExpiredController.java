@@ -22,7 +22,7 @@ public class ExpiredController {
 
     @GetMapping("/{token}")
     public String sendTokenAgain(@PathVariable String token){
-        Optional<Token> byToken = tokenRepository.getByToken(token);
+        Optional<Token> byToken = tokenRepository.getByTokenValue(token);
         if(byToken.isPresent()){
             String username = byToken.get().getUsername();
             Optional<UserDto> byUsername = userService.findByUsername(username);

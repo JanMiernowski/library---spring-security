@@ -19,7 +19,7 @@ import java.util.UUID;
 public class GlobalErrorHandler {
 
     @ExceptionHandler(value = IncorrectResultSizeDataAccessException.class)
-    public ModelAndView handleAnyRuntimeException(IncorrectResultSizeDataAccessException ex){
+    public ModelAndView handleAnyIncorrectResultSizeDataAccessExceptionException(IncorrectResultSizeDataAccessException ex){
         String errorCode = UUID.randomUUID().toString();
         System.out.println("Error code " + errorCode);
         ex.printStackTrace();

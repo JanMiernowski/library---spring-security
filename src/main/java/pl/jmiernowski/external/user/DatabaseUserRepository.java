@@ -22,7 +22,10 @@ public class DatabaseUserRepository implements UserRepository {
 
     @Override
     public void update(UserEntity entity) {
-        jpaUserRepository.save(entity);
+        Optional<UserEntity> byId = getById(entity.getId());
+        if(byId.isPresent()){
+            jpaUserRepository.save(entity);
+        }
     }
 
     @Override

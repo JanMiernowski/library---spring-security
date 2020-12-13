@@ -22,4 +22,11 @@ public class DatabaseEmailRepository implements EmailRepository {
     public EmailEntity create(EmailEntity emailEntity){
         return jpaEmailRepository.save(emailEntity);
     }
+
+    @Override
+    public Optional<EmailEntity> getById(Long id) {
+        return jpaEmailRepository.findById(id);
+    }
+
+
 }

@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Table
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,7 +20,7 @@ public class ActivationTokenEntity {
 
     private String username;
 
-    private String token;
+    private String tokenValue;
 
     private LocalDateTime validTo;
 }

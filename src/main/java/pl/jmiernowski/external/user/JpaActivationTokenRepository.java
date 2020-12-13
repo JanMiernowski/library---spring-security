@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public interface JpaActivationTokenRepository extends JpaRepository<ActivationTokenEntity, Long> {
 
-    Optional<ActivationTokenEntity> findByToken(String token);
+    Optional<ActivationTokenEntity> findByTokenValue(String token);
+    Optional<ActivationTokenEntity> findById(ActivationTokenEntity entity);
 
 }

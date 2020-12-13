@@ -1020,7 +1020,7 @@ instanceKlass pl/jmiernowski/external/user/DatabaseUserRepository
 instanceKlass pl/jmiernowski/domain/user/UserRepository
 instanceKlass com/fasterxml/jackson/databind/type/ClassKey
 instanceKlass pl/jmiernowski/external/user/DatabaseTokenRepository
-instanceKlass pl/jmiernowski/domain/user/token/TokenRepository
+instanceKlass pl/jmiernowski/domain/user/tokenDto/TokenRepository
 instanceKlass com/fasterxml/jackson/databind/deser/Deserializers$Base
 instanceKlass pl/jmiernowski/external/sendEmail/EmailSender
 instanceKlass pl/jmiernowski/domain/sendEmail/EmailRepository
